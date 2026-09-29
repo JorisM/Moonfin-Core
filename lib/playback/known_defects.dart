@@ -20,7 +20,9 @@ class KnownDefects {
   };
 
   static const Set<String> modelsWithDolbyVisionProfile7ElDirectPlayDefault =
-      <String>{'AFTKRT'};
+      <String>{
+        'AFTKRT',
+      };
 
   static bool get hevcDoviHdr10PlusBug =>
       PlatformDetection.knownHevcDoviHdr10PlusBug ||

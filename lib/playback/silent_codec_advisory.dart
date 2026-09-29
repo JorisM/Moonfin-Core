@@ -34,23 +34,32 @@ class SilentCodecAdvisoryInputs {
   final bool isOfflinePlayback;
 }
 
+/// Decides whether to offer the user a server-side transcode because the
+/// current backend, output route and codec are known to play as silence.
 class SilentCodecAdvisory {
   const SilentCodecAdvisory._();
 
-  static bool shouldOffer(SilentCodecAdvisoryInputs i) {
-    if (i.isRemotePlayback || i.isExternalPlayer || i.isOfflinePlayback) {
+  /// True only when the local output is what plays the audio, the server is
+  /// sending the codec untouched, the user has not opted out of local decode
+  /// or dismissed this combination, and [KnownDefects] lists it as silent.
+  static bool shouldOffer(SilentCodecAdvisoryInputs inputs) {
+    if (inputs.isRemotePlayback ||
+        inputs.isExternalPlayer ||
+        inputs.isOfflinePlayback) {
       return false;
     }
-    if (!i.isDirectPlayingAudio) return false;
-    if (!i.localDecodeEnabledForCodec) return false;
-    if (i.alreadyDismissed) return false;
+    if (!inputs.isDirectPlayingAudio) return false;
+    if (!inputs.localDecodeEnabledForCodec) return false;
+    if (inputs.alreadyDismissed) return false;
     return KnownDefects.rendersSilently(
-      backend: i.backend,
-      route: i.route,
-      codec: i.codec,
+      backend: inputs.backend,
+      route: inputs.route,
+      codec: inputs.codec,
     );
   }
 
+  /// Storage key for a dismissal. The enum names are a persisted format:
+  /// renaming an enum value invalidates every stored dismissal.
   static String dismissalKey({
     required PlaybackBackendKind backend,
     required AudioRouteType route,

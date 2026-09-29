@@ -48,15 +48,21 @@ void main() {
     expect(SilentCodecAdvisory.shouldOffer(inputs(dismissed: true)), isFalse);
   });
 
-  test('stays silent while casting, on an external player, and offline', () {
+  test('stays silent while casting', () {
     expect(
       SilentCodecAdvisory.shouldOffer(inputs(isRemotePlayback: true)),
       isFalse,
     );
+  });
+
+  test('stays silent on an external player', () {
     expect(
       SilentCodecAdvisory.shouldOffer(inputs(isExternalPlayer: true)),
       isFalse,
     );
+  });
+
+  test('stays silent offline', () {
     expect(SilentCodecAdvisory.shouldOffer(inputs(isOffline: true)), isFalse);
   });
 
