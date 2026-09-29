@@ -12,7 +12,8 @@ import 'device_capability_cache.dart';
 ///
 /// Android TV exposes a real probe (codec passthrough + route) over the
 /// platform method channel; tvOS exposes a channel-count / route probe via
-/// `AVAudioSession`. Both return a map shaped for
+/// `AVAudioSession`, and macOS reports only the route (CoreAudio transport).
+/// All return a map shaped for
 /// [AudioCapabilityProfile.fromMap]. Other platforms have no probe.
 ///
 /// Used by app startup ([query]/[queryWithRetry]) and by the audio settings
@@ -29,6 +30,9 @@ class AudioCapabilityProbe {
   static const _tvosMethodChannel = MethodChannel('moonfin/appletv_audio');
   static const _tvosEventChannel = EventChannel('moonfin/appletv_audio_events');
 
+  static const _macosMethodChannel = MethodChannel('moonfin/macos_audio');
+  static const _macosEventChannel = EventChannel('moonfin/macos_audio_events');
+
   static StreamSubscription<dynamic>? _subscription;
   static Timer? _settleTimer;
   static AudioCapabilityProfile? _pendingDowngrade;
@@ -42,7 +46,8 @@ class AudioCapabilityProbe {
   /// Whether the running platform exposes a native probe.
   static bool get isSupported =>
       (PlatformDetection.isAndroid && PlatformDetection.isTV) ||
-      PlatformDetection.isAppleTV;
+      PlatformDetection.isAppleTV ||
+      PlatformDetection.isMacOS;
 
   static MethodChannel? get _methodChannel {
     if (PlatformDetection.isAndroid && PlatformDetection.isTV) {
@@ -51,6 +56,7 @@ class AudioCapabilityProbe {
     if (PlatformDetection.isAppleTV) {
       return _tvosMethodChannel;
     }
+    if (PlatformDetection.isMacOS) return _macosMethodChannel;
     return null;
   }
 
@@ -61,6 +67,7 @@ class AudioCapabilityProbe {
     if (PlatformDetection.isAppleTV) {
       return _tvosEventChannel;
     }
+    if (PlatformDetection.isMacOS) return _macosEventChannel;
     return null;
   }
 
