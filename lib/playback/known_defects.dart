@@ -1,5 +1,12 @@
 import '../preference/preference_constants.dart';
 import '../util/platform_detection.dart';
+import 'audio_capability_profile.dart';
+
+/// Which player is decoding. Not the same thing as the platform: the defect
+/// below is AetherEngine's, and mpv plays the same file on the same route.
+/// Deliberately distinct from `PlaybackEnginePreference`, which is Android's
+/// user-facing engine choice.
+enum PlaybackBackendKind { aether, mediaKit, media3, html }
 
 class KnownDefects {
   const KnownDefects._();
@@ -61,5 +68,28 @@ class KnownDefects {
               model ?? PlatformDetection.deviceModel,
             );
     }
+  }
+
+  /// AetherEngine 6.89.1 renders EAC3 as silence on Bluetooth while wired
+  /// output and mpv-based clients play it. Observed 2026-09-29: MacBook Pro
+  /// M4 Pro + MacBook Air M4, macOS 26, AirPods Pro, EAC3 5.1 JOC.
+  static const _silentDirectPlayCodecs =
+      <PlaybackBackendKind, Map<AudioRouteType, Set<String>>>{
+        PlaybackBackendKind.aether: <AudioRouteType, Set<String>>{
+          AudioRouteType.bluetooth: <String>{'eac3'},
+        },
+      };
+
+  /// `AudioRouteType.other` means the route was never resolved; always returns
+  /// false defensively against future table rows that might include it.
+  static bool rendersSilently({
+    required PlaybackBackendKind backend,
+    required AudioRouteType route,
+    required String codec,
+  }) {
+    if (route == AudioRouteType.other) return false;
+    final routes = _silentDirectPlayCodecs[backend];
+    if (routes == null) return false;
+    return routes[route]?.contains(codec.trim().toLowerCase()) ?? false;
   }
 }
