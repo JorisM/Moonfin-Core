@@ -30,6 +30,7 @@
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		3AB96FE98115E1CBEC0E4C5C /* NowPlayingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C56C0F2086D9E831D8CB7D /* NowPlayingController.swift */; };
+		3B9F6A1D84C2E07515D8A3F9 /* MacosAudioChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3A91C07B24D6F80A1C9E42 /* MacosAudioChannel.swift */; };
 		4AB6FBC40570979761F31A0B /* AppleTvPreviewChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A9772EBAFCDD593F932DB5 /* AppleTvPreviewChannel.swift */; };
 		4D9A3FA11A441DE13D2B52CA /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F34DBD260C2ADC6F64A8D2A /* Pods_RunnerTests.framework */; };
 		5313B8C31F568022D36053EC /* SubtitleOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36B66D5A31C21358F339649 /* SubtitleOverlay.swift */; };
@@ -37,6 +38,7 @@
 		6C864DCF0EB7873D0D9E562A /* AetherPlayerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7FAD2039BD3D141A17F53F /* AetherPlayerWrapper.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
 		7F2F20CDD44C0FF6F6D56C2B /* AssRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8404C97008E1B1C962BE2A8D /* AssRenderer.swift */; };
+		9C2E5B70A3D148F6E0B7C4A2 /* MacosAudioRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D40B2E8C915A3F60B8E1D57 /* MacosAudioRouteTests.swift */; };
 		B0751379C9C582670D9B5B0B /* SubtitleFontLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F587942E0024D8B11C40C3FE /* SubtitleFontLocator.swift */; };
 		BAC8382FD5504F2304388AEC /* libass in Frameworks */ = {isa = PBXBuildFile; productRef = 21E4756219CF9B3C28F53FC9 /* libass */; };
 		C45E75A8B525038BA99A6F42 /* AppleTvThemeMusicChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628760915031C6D43C16745F /* AppleTvThemeMusicChannel.swift */; };
@@ -98,11 +100,13 @@
 		47A9772EBAFCDD593F932DB5 /* AppleTvPreviewChannel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleTvPreviewChannel.swift; path = ../../../tvos/Runner/AppleTvPreviewChannel.swift; sourceTree = "<group>"; };
 		5C42FC11E9762F637A0E3AE5 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		5C4DDE0DB134246DD2F3D49D /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5E3A91C07B24D6F80A1C9E42 /* MacosAudioChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacosAudioChannel.swift; sourceTree = "<group>"; };
 		628760915031C6D43C16745F /* AppleTvThemeMusicChannel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleTvThemeMusicChannel.swift; path = ../../../tvos/Runner/AppleTvThemeMusicChannel.swift; sourceTree = "<group>"; };
 		66D508874A22AB77D25AF7E0 /* MacosAetherVideoPlatformView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacosAetherVideoPlatformView.swift; sourceTree = "<group>"; };
 		6F34DBD260C2ADC6F64A8D2A /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		7D40B2E8C915A3F60B8E1D57 /* MacosAudioRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacosAudioRouteTests.swift; sourceTree = "<group>"; };
 		8404C97008E1B1C962BE2A8D /* AssRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssRenderer.swift; path = ../../../tvos/Runner/Playback/Aether/AssRenderer.swift; sourceTree = "<group>"; };
 		84E5B2CDBEA803A61630EC38 /* EngineTrustPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EngineTrustPolicy.swift; path = ../../../tvos/Runner/Playback/Aether/EngineTrustPolicy.swift; sourceTree = "<group>"; };
 		852AC4308EB5F442743449DD /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				331C80D7294CF71000263BE5 /* RunnerTests.swift */,
+				7D40B2E8C915A3F60B8E1D57 /* MacosAudioRouteTests.swift */,
 			);
 			path = RunnerTests;
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 			children = (
 				33CC10F02044A3C60003C045 /* AppDelegate.swift */,
 				33CC11122044BFA00003C045 /* MainFlutterWindow.swift */,
+				5E3A91C07B24D6F80A1C9E42 /* MacosAudioChannel.swift */,
 				33E51913231747F40026EE4D /* DebugProfile.entitlements */,
 				33E51914231749380026EE4D /* Release.entitlements */,
 				33CC11242044D66E0003C045 /* Resources */,
@@ -489,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				331C80D8294CF71000263BE5 /* RunnerTests.swift in Sources */,
+				9C2E5B70A3D148F6E0B7C4A2 /* MacosAudioRouteTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */,
+				3B9F6A1D84C2E07515D8A3F9 /* MacosAudioChannel.swift in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
 				335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */,
 				671644C63A7634853A2706E9 /* MacosAetherVideoPlatformView.swift in Sources */,

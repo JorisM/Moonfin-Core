@@ -20,6 +20,7 @@ class MainFlutterWindow: NSWindow {
   private var aetherVideoChannel: AetherVideoChannel?
   private var themeMusicChannel: AppleTvThemeMusicChannel?
   private var previewChannel: AppleTvPreviewChannel?
+  private var macosAudioChannel: MacosAudioChannel?
   // Retained so the security-scoped access stays open for the session.
   private var accessedDownloadURL: URL?
 
@@ -50,6 +51,9 @@ class MainFlutterWindow: NSWindow {
     self.backgroundColor = NSColor(white: 0.04, alpha: 1.0)
 
     RegisterGeneratedPlugins(registry: flutterViewController)
+
+    self.macosAudioChannel = MacosAudioChannel(
+      messenger: flutterViewController.engine.binaryMessenger)
 
     let sfSymbolChannel = FlutterMethodChannel(
       name: "moonfin/sf_symbols",
