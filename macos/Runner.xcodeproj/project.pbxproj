@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A1B2C3D4E5F60718293A4B03 /* MacosAudioChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B01 /* MacosAudioChannel.swift */; };
+		A1B2C3D4E5F60718293A4B04 /* MacosAudioRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B02 /* MacosAudioRouteTests.swift */; };
 		008D0743212489872160F548 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 852AC4308EB5F442743449DD /* Pods_Runner.framework */; };
 		147CC97F1B187B39F508DCA8 /* AetherVideoChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C04BD1A91A9A76BD9478F8 /* AetherVideoChannel.swift */; };
 		331C80D8294CF71000263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C80D7294CF71000263BE5 /* RunnerTests.swift */; };
@@ -76,6 +78,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A1B2C3D4E5F60718293A4B01 /* MacosAudioChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacosAudioChannel.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B02 /* MacosAudioRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacosAudioRouteTests.swift; sourceTree = "<group>"; };
 		10C04BD1A91A9A76BD9478F8 /* AetherVideoChannel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AetherVideoChannel.swift; path = ../../../tvos/Runner/Playback/Aether/AetherVideoChannel.swift; sourceTree = "<group>"; };
 		159DE08E3FAD670AB77FA219 /* PlayerTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlayerTypes.swift; path = ../../../tvos/Runner/Playback/Aether/PlayerTypes.swift; sourceTree = "<group>"; };
 		331C80D5294CF71000263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				331C80D7294CF71000263BE5 /* RunnerTests.swift */,
+				A1B2C3D4E5F60718293A4B02 /* MacosAudioRouteTests.swift */,
 			);
 			path = RunnerTests;
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 			children = (
 				33CC10F02044A3C60003C045 /* AppDelegate.swift */,
 				33CC11122044BFA00003C045 /* MainFlutterWindow.swift */,
+				A1B2C3D4E5F60718293A4B01 /* MacosAudioChannel.swift */,
 				33E51913231747F40026EE4D /* DebugProfile.entitlements */,
 				33E51914231749380026EE4D /* Release.entitlements */,
 				33CC11242044D66E0003C045 /* Resources */,
@@ -489,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				331C80D8294CF71000263BE5 /* RunnerTests.swift in Sources */,
+				A1B2C3D4E5F60718293A4B04 /* MacosAudioRouteTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */,
+				A1B2C3D4E5F60718293A4B03 /* MacosAudioChannel.swift in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
 				335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */,
 				671644C63A7634853A2706E9 /* MacosAetherVideoPlatformView.swift in Sources */,
