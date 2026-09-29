@@ -621,13 +621,19 @@ Future<void> _detectAndApplyAudioCapabilities(UserPreferences prefs) async {
   try {
     // Probe with a retry window sized against an HDMI handshake, then publish
     // so getDeviceProfile() picks it up.
-    final profile = await AudioCapabilityProbe.queryWithRetry();
+    // The retry exists for the HDMI handshake race on TV boxes; CoreAudio
+    // has none, and routes it can't map read as empty for good.
+    final isMacOS = PlatformDetection.isMacOS;
+    final profile = await AudioCapabilityProbe.queryWithRetry(
+      attempts: isMacOS ? 1 : 5,
+    );
     AudioCapabilityProbe.apply(profile);
 
     // A launch that still has no real answer keeps trying with a longer
     // backoff, since a box powered on with the app can take a while to bring
     // its audio outputs up.
-    if (profile == null || AudioCapabilityProbe.looksEmpty(profile)) {
+    if (!isMacOS &&
+        (profile == null || AudioCapabilityProbe.looksEmpty(profile))) {
       unawaited(_retryAudioCapsOffLaunchPath());
     }
 

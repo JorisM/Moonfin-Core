@@ -439,7 +439,8 @@ class _AudioPreferencesScreenState extends State<_AudioPreferencesScreen> {
             adaptiveListSection(
               children: [
                 ..._buildDetectedCapabilities(l10n),
-                if (AudioCapabilityProbe.isSupported) _buildRedetectTile(),
+                if (AudioCapabilityProbe.isSupported && !PlatformDetection.isMacOS)
+                  _buildRedetectTile(),
               ],
             ),
           ],
