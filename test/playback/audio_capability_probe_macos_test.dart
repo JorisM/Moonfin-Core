@@ -48,11 +48,9 @@ void main() {
 
     expect(probed, isNotNull);
     expect(probed!.activeRouteType, AudioRouteType.bluetooth);
-    expect(probed.maxPcmChannels, fallback.maxPcmChannels);
-    expect(probed.canDecodeEac3, fallback.canDecodeEac3);
-    expect(probed.canDecodeTrueHd, fallback.canDecodeTrueHd);
-    expect(probed.canPassthroughEac3, fallback.canPassthroughEac3);
-    expect(probed.routeSupportsHdAudio, fallback.routeSupportsHdAudio);
+    // toMap() covers every field, so a field added later is compared too.
+    final expected = fallback.toMap()..['activeRouteType'] = 'bluetooth';
+    expect(probed.toMap(), expected);
     expect(probed.isDowngradeFrom(fallback), isFalse);
   });
 
