@@ -19,6 +19,9 @@ final class MacosAudioRouteTests: XCTestCase {
 
     func testWiredTransportsMapToHeadphones() {
         XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypeUSB), "headphones")
+        XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypeFireWire), "headphones")
+        XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypeThunderbolt), "headphones")
+        XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypePCI), "headphones")
     }
 
     func testUnknownTransportFallsThroughToOther() {
@@ -28,10 +31,25 @@ final class MacosAudioRouteTests: XCTestCase {
 
     func testCapabilityMapMatchesOptimisticFallbackExceptRoute() {
         let map = MacosAudioRoute.capabilities(routeName: "bluetooth")
+        let expectedBools: [String: Bool] = [
+            "routeSupportsHdAudio": false,
+            "canDecodeAc3": true,
+            "canDecodeEac3": true,
+            "canDecodeDts": true,
+            "canDecodeDtsHd": true,
+            "canDecodeTrueHd": true,
+            "canDecodeFlac": true,
+            "canPassthroughAc3": false,
+            "canPassthroughEac3": false,
+            "canPassthroughDts": false,
+            "canPassthroughDtsHd": false,
+            "canPassthroughTrueHd": false,
+        ]
+        XCTAssertEqual(map.count, 14)
         XCTAssertEqual(map["activeRouteType"] as? String, "bluetooth")
         XCTAssertEqual(map["maxPcmChannels"] as? Int, 8)
-        XCTAssertEqual(map["canDecodeEac3"] as? Bool, true)
-        XCTAssertEqual(map["canPassthroughEac3"] as? Bool, false)
-        XCTAssertEqual(map["routeSupportsHdAudio"] as? Bool, false)
+        for (key, expected) in expectedBools {
+            XCTAssertEqual(map[key] as? Bool, expected, key)
+        }
     }
 }
