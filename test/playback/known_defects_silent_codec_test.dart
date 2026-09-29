@@ -15,7 +15,7 @@ void main() {
   });
 
   test('the same codec and route under mpv is not', () {
-    // Fladder plays the file on the same Mac and the same AirPods.
+    // mpv-based clients play the file on the same Mac and the same AirPods.
     expect(
       KnownDefects.rendersSilently(
         backend: PlaybackBackendKind.mediaKit,
@@ -41,7 +41,18 @@ void main() {
     expect(
       KnownDefects.rendersSilently(
         backend: PlaybackBackendKind.aether,
-        route: AudioRouteType.speaker,
+        route: AudioRouteType.headphones,
+        codec: 'eac3',
+      ),
+      isFalse,
+    );
+  });
+
+  test('the same codec on an HDMI route is not', () {
+    expect(
+      KnownDefects.rendersSilently(
+        backend: PlaybackBackendKind.aether,
+        route: AudioRouteType.hdmi,
         codec: 'eac3',
       ),
       isFalse,
@@ -65,6 +76,28 @@ void main() {
         backend: PlaybackBackendKind.aether,
         route: AudioRouteType.bluetooth,
         codec: 'EAC3',
+      ),
+      isTrue,
+    );
+  });
+
+  test('codec matching trims leading and trailing spaces', () {
+    expect(
+      KnownDefects.rendersSilently(
+        backend: PlaybackBackendKind.aether,
+        route: AudioRouteType.bluetooth,
+        codec: '  eac3 ',
+      ),
+      isTrue,
+    );
+  });
+
+  test('codec matching trims spaces and newlines', () {
+    expect(
+      KnownDefects.rendersSilently(
+        backend: PlaybackBackendKind.aether,
+        route: AudioRouteType.bluetooth,
+        codec: ' EAC3\n',
       ),
       isTrue,
     );

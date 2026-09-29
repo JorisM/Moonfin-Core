@@ -20,9 +20,7 @@ class KnownDefects {
   };
 
   static const Set<String> modelsWithDolbyVisionProfile7ElDirectPlayDefault =
-      <String>{
-        'AFTKRT',
-      };
+      <String>{'AFTKRT'};
 
   static bool get hevcDoviHdr10PlusBug =>
       PlatformDetection.knownHevcDoviHdr10PlusBug ||
@@ -70,23 +68,18 @@ class KnownDefects {
     }
   }
 
-  /// Combinations observed to play as silence while the player reports normal
-  /// playback. One row per observation, never per suspicion.
-  ///
-  /// AetherEngine renders EAC3 as silence on a Bluetooth route while the same
-  /// track plays through wired output, and mpv plays it on the same route.
-  /// Observed 2026-09-29: MacBook Pro M4 Pro + MacBook Air M4, macOS 26,
-  /// AirPods Pro, Moonfin 2.6.0, EAC3 5.1 JOC.
-  static const Map<PlaybackBackendKind, Map<AudioRouteType, Set<String>>>
-  _silentDirectPlayCodecs = <PlaybackBackendKind, Map<AudioRouteType, Set<String>>>{
-    PlaybackBackendKind.aether: <AudioRouteType, Set<String>>{
-      AudioRouteType.bluetooth: <String>{'eac3'},
-    },
-  };
+  /// AetherEngine 6.89.1 renders EAC3 as silence on Bluetooth while wired
+  /// output and mpv-based clients play it. Observed 2026-09-29: MacBook Pro
+  /// M4 Pro + MacBook Air M4, macOS 26, AirPods Pro, EAC3 5.1 JOC.
+  static const _silentDirectPlayCodecs =
+      <PlaybackBackendKind, Map<AudioRouteType, Set<String>>>{
+        PlaybackBackendKind.aether: <AudioRouteType, Set<String>>{
+          AudioRouteType.bluetooth: <String>{'eac3'},
+        },
+      };
 
-  /// Whether this player is known to render [codec] as silence on [route].
-  /// `AudioRouteType.other` means the route was never resolved, which is a
-  /// "say nothing" answer rather than a match.
+  /// `AudioRouteType.other` means the route was never resolved; always returns
+  /// false defensively against future table rows that might include it.
   static bool rendersSilently({
     required PlaybackBackendKind backend,
     required AudioRouteType route,
