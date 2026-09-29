@@ -4,6 +4,7 @@ import 'package:moonfin/playback/known_defects.dart';
 import 'package:moonfin/playback/silent_codec_advisory.dart';
 
 SilentCodecAdvisoryInputs inputs({
+  PlaybackBackendKind backend = PlaybackBackendKind.aether,
   bool isDirectPlaying = true,
   bool localDecodeEnabled = true,
   bool dismissed = false,
@@ -13,7 +14,7 @@ SilentCodecAdvisoryInputs inputs({
   AudioRouteType route = AudioRouteType.bluetooth,
   String codec = 'eac3',
 }) => SilentCodecAdvisoryInputs(
-  backend: PlaybackBackendKind.aether,
+  backend: backend,
   route: route,
   codec: codec,
   isDirectPlayingAudio: isDirectPlaying,
@@ -36,7 +37,6 @@ void main() {
     );
   });
 
-  // Review Focus 3
   test('stays silent when the user already turned local decoding off', () {
     expect(
       SilentCodecAdvisory.shouldOffer(inputs(localDecodeEnabled: false)),
@@ -48,7 +48,6 @@ void main() {
     expect(SilentCodecAdvisory.shouldOffer(inputs(dismissed: true)), isFalse);
   });
 
-  // Review Focus 2
   test('stays silent while casting, on an external player, and offline', () {
     expect(
       SilentCodecAdvisory.shouldOffer(inputs(isRemotePlayback: true)),
@@ -72,7 +71,17 @@ void main() {
     expect(SilentCodecAdvisory.shouldOffer(inputs(codec: 'aac')), isFalse);
   });
 
-  test('dismissal keys are per backend, route and codec', () {
+  test('backend variation changes advisory decision', () {
+    // mediaKit plays eac3 on bluetooth fine, unlike aether
+    expect(
+      SilentCodecAdvisory.shouldOffer(
+        inputs(backend: PlaybackBackendKind.mediaKit),
+      ),
+      isFalse,
+    );
+  });
+
+  test('dismissal keys normalise codec and distinguish backend, route', () {
     expect(
       SilentCodecAdvisory.dismissalKey(
         backend: PlaybackBackendKind.aether,
@@ -80,6 +89,36 @@ void main() {
         codec: 'eac3',
       ),
       'aether:bluetooth:eac3',
+    );
+
+    // Codec normalisation: spaces and case
+    expect(
+      SilentCodecAdvisory.dismissalKey(
+        backend: PlaybackBackendKind.aether,
+        route: AudioRouteType.bluetooth,
+        codec: ' EAC3 ',
+      ),
+      'aether:bluetooth:eac3',
+    );
+
+    // Different backend produces different key
+    expect(
+      SilentCodecAdvisory.dismissalKey(
+        backend: PlaybackBackendKind.mediaKit,
+        route: AudioRouteType.bluetooth,
+        codec: 'eac3',
+      ),
+      'mediaKit:bluetooth:eac3',
+    );
+
+    // Different route produces different key
+    expect(
+      SilentCodecAdvisory.dismissalKey(
+        backend: PlaybackBackendKind.aether,
+        route: AudioRouteType.speaker,
+        codec: 'eac3',
+      ),
+      'aether:speaker:eac3',
     );
   });
 }
