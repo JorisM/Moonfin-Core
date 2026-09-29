@@ -1,0 +1,15 @@
+{
+  "maxPcmChannels": 8,
+  "routeSupportsHdAudio": false,
+  "canDecodeAc3": true,
+  "canDecodeEac3": true,
+  "canDecodeDts": true,
+  "canDecodeDtsHd": true,
+  "canDecodeTrueHd": true,
+  "canDecodeFlac": true,
+  "canPassthroughAc3": false,
+  "canPassthroughEac3": false,
+  "canPassthroughDts": false,
+  "canPassthroughDtsHd": false,
+  "canPassthroughTrueHd": false
+}

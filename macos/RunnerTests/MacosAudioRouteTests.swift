@@ -21,7 +21,10 @@ final class MacosAudioRouteTests: XCTestCase {
         XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypeUSB), "headphones")
         XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypeFireWire), "headphones")
         XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypeThunderbolt), "headphones")
-        XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypePCI), "headphones")
+    }
+
+    func testInternalPciMapsToSpeaker() {
+        XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: kAudioDeviceTransportTypePCI), "speaker")
     }
 
     func testUnknownTransportFallsThroughToOther() {
@@ -29,27 +32,20 @@ final class MacosAudioRouteTests: XCTestCase {
         XCTAssertEqual(MacosAudioRoute.routeName(forTransportType: 0x6d656f77), "other")
     }
 
-    func testCapabilityMapMatchesOptimisticFallbackExceptRoute() {
-        let map = MacosAudioRoute.capabilities(routeName: "bluetooth")
-        let expectedBools: [String: Bool] = [
-            "routeSupportsHdAudio": false,
-            "canDecodeAc3": true,
-            "canDecodeEac3": true,
-            "canDecodeDts": true,
-            "canDecodeDtsHd": true,
-            "canDecodeTrueHd": true,
-            "canDecodeFlac": true,
-            "canPassthroughAc3": false,
-            "canPassthroughEac3": false,
-            "canPassthroughDts": false,
-            "canPassthroughDtsHd": false,
-            "canPassthroughTrueHd": false,
-        ]
-        XCTAssertEqual(map.count, 14)
-        XCTAssertEqual(map["activeRouteType"] as? String, "bluetooth")
-        XCTAssertEqual(map["maxPcmChannels"] as? Int, 8)
-        for (key, expected) in expectedBools {
-            XCTAssertEqual(map[key] as? Bool, expected, key)
+    /// Shared with test/playback/audio_capability_probe_macos_test.dart, so the
+    /// Swift map and the Dart-side `optimistic()` comparison cannot drift apart.
+    func testCapabilityMapMatchesSharedFixtureExceptRoute() throws {
+        let fixtureURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("test_fixtures/macos_audio_capabilities.json")
+        let data = try Data(contentsOf: fixtureURL)
+        let fixture = try XCTUnwrap(
+            try JSONSerialization.jsonObject(with: data) as? [String: Any])
+
+        for route in ["bluetooth", "speaker", "headphones", "hdmi", "other"] {
+            var map = MacosAudioRoute.capabilities(routeName: route)
+            XCTAssertEqual(map.removeValue(forKey: "activeRouteType") as? String, route)
+            XCTAssertEqual(NSDictionary(dictionary: map), NSDictionary(dictionary: fixture), route)
         }
     }
 }

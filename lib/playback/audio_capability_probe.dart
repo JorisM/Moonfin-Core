@@ -13,8 +13,8 @@ import 'device_capability_cache.dart';
 /// Android TV exposes a real probe (codec passthrough + route) over the
 /// platform method channel; tvOS exposes a channel-count / route probe via
 /// `AVAudioSession`, and macOS reports only the route (CoreAudio transport).
-/// All return a map shaped for
-/// [AudioCapabilityProfile.fromMap]. Other platforms have no probe.
+/// All return a map shaped for [AudioCapabilityProfile.fromMap]. Other
+/// platforms have no probe.
 ///
 /// Used by app startup ([query]/[queryWithRetry]) and by the audio settings
 /// screen's "Re-detect" action.
@@ -233,10 +233,13 @@ class AudioCapabilityProbe {
         // to the box's phantom speaker. The guards inside apply keep either
         // from clobbering a good snapshot on the spot, while a genuine
         // downgrade like unplugging an AVR still lands once it has held.
+        // CoreAudio answers authoritatively with no handshake race, so on
+        // macOS hdmi -> bluetooth must not wait out the downgrade window.
         apply(
           AudioCapabilityProfile.fromMap(
             event.map((key, value) => MapEntry(key.toString(), value)),
           ),
+          immediate: PlatformDetection.isMacOS,
         );
       }
     }, onError: (_) {});

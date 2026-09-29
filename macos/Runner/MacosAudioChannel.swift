@@ -1,6 +1,7 @@
 import CoreAudio
 import FlutterMacOS
 import Foundation
+import os.log
 
 /// Pure mapping half, so the transport table is testable without CoreAudio,
 /// a window or a Flutter engine.
@@ -11,14 +12,16 @@ enum MacosAudioRoute {
         switch transport {
         case kAudioDeviceTransportTypeBluetooth, kAudioDeviceTransportTypeBluetoothLE:
             return "bluetooth"
-        case kAudioDeviceTransportTypeBuiltIn:
+        case kAudioDeviceTransportTypeBuiltIn, kAudioDeviceTransportTypePCI:
+            // A MacBook's 3.5 mm jack reports BuiltIn, so wired headphones read as speaker.
             return "speaker"
         case kAudioDeviceTransportTypeHDMI, kAudioDeviceTransportTypeDisplayPort:
             return "hdmi"
         case kAudioDeviceTransportTypeUSB, kAudioDeviceTransportTypeFireWire,
-             kAudioDeviceTransportTypeThunderbolt, kAudioDeviceTransportTypePCI:
+             kAudioDeviceTransportTypeThunderbolt:
             return "headphones"
         default:
+            // AirPlay is deliberately unmapped, for lack of an observation.
             return "other"
         }
     }
@@ -115,9 +118,15 @@ final class MacosAudioChannel: NSObject, FlutterStreamHandler {
         }
         let status = AudioObjectAddPropertyListenerBlock(
             AudioObjectID(kAudioObjectSystemObject), &defaultDeviceAddress, DispatchQueue.main, block)
-        if status == noErr { listener = block }
+        if status == noErr {
+            listener = block
+        } else {
+            os_log("AudioObjectAddPropertyListenerBlock failed: %d", log: .default, type: .error, status)
+        }
         return nil
     }
+
+    deinit { _ = onCancel(withArguments: nil) }
 
     func onCancel(withArguments arguments: Any?) -> FlutterError? {
         if let block = listener {
