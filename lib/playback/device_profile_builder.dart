@@ -133,6 +133,12 @@ class DeviceProfileBuilder {
     // codec direct plays and the player decodes, bitstreams or downmixes it
     // locally. Detection never subtracts from the advertised list.
     bool universalAudioDecode = false,
+    // Codecs the user has taken off local decoding. A player that decodes in
+    // software advertises everything, which leaves no way out when one of its
+    // decoders is silent on a given output. Listing a codec here drops it from
+    // the direct-play offer (unless it is bitstreamed) so the server transcodes
+    // it to the fallback codec instead.
+    Set<String> localDecodeDisabledCodecs = const <String>{},
     // The player re-encodes the codecs its container can't carry to EAC3 on
     // the device, and that encoder won't open above 48 kHz.
     bool bridgesAudioToEac3 = false,
@@ -303,6 +309,7 @@ class DeviceProfileBuilder {
                   codec: codec,
                   capabilityProfile: capabilityProfile,
                   universalAudioDecode: universalAudioDecode,
+                  localDecodeDisabledCodecs: localDecodeDisabledCodecs,
                   playerDecodesTrueHd: playerDecodesTrueHd,
                   ac3PassthroughEnabled: ac3PassthroughEnabled,
                   eac3PassthroughEnabled: eac3PassthroughEnabled,
@@ -971,12 +978,28 @@ class DeviceProfileBuilder {
     required String codec,
     required AudioCapabilityProfile capabilityProfile,
     bool universalAudioDecode = false,
+    Set<String> localDecodeDisabledCodecs = const <String>{},
     bool playerDecodesTrueHd = true,
     required bool ac3PassthroughEnabled,
     required bool eac3PassthroughEnabled,
     required bool dtsCorePassthroughEnabled,
     required bool trueHdPassthroughEnabled,
   }) {
+    // A codec the user took off local decoding only stays in the offer while
+    // it is bitstreamed, a route that never reaches the decoder. Checked ahead
+    // of the universal-decode shortcut: that shortcut exists so a failed
+    // capability probe can't force a transcode, not to override a stated
+    // preference.
+    if (localDecodeDisabledCodecs.contains(codec)) {
+      return _isAudioCodecPassthroughEnabled(
+        codec: codec,
+        ac3PassthroughEnabled: ac3PassthroughEnabled,
+        eac3PassthroughEnabled: eac3PassthroughEnabled,
+        dtsCorePassthroughEnabled: dtsCorePassthroughEnabled,
+        trueHdPassthroughEnabled: trueHdPassthroughEnabled,
+      );
+    }
+
     // A failed capability probe means the player picks a different local
     // route, never that the server has to re-encode.
     if (universalAudioDecode) {

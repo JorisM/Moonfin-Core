@@ -11078,6 +11078,28 @@ class AppLocalizationsPl extends AppLocalizations {
   String get locallyDecodedCodecs => 'Kodeki dekodowane lokalnie';
 
   @override
+  String get settingsAudioLocalDecoding => 'Local Decoding';
+
+  @override
+  String get settingsAudioLocalDecodeAc3 => 'Decode AC3 locally';
+
+  @override
+  String get settingsAudioLocalDecodeEac3 => 'Decode EAC3 locally';
+
+  @override
+  String get settingsAudioLocalDecodeDts => 'Decode DTS locally';
+
+  @override
+  String get settingsAudioLocalDecodeTrueHd => 'Decode TrueHD locally';
+
+  @override
+  String get settingsAudioLocalDecodeFlac => 'Decode FLAC locally';
+
+  @override
+  String get settingsAudioLocalDecodeDescription =>
+      'Off asks the server to transcode this codec instead. Turn off if playback is silent on this codec.';
+
+  @override
   String get transcodeTargetCodecs => 'Docelowe kodeki transkodowania';
 
   @override

@@ -72,9 +72,28 @@ class _AudioPreferencesScreenState extends State<_AudioPreferencesScreen> {
   }
 
   // Media3 on Android, AetherEngine on Apple and mpv on Linux and Windows all
-  // decode these on the device, so the list doesn't depend on the engine.
-  static const _locallyDecodedCodecs =
-      'AAC, AC3, EAC3, DTS, DTS-HD, TrueHD, FLAC';
+  // decode these on the device, so the base list doesn't depend on the engine.
+  // What the row prints does depend on the local-decode switches below, since
+  // a codec taken off them is handed to the server instead.
+  static const _locallyDecodableCodecs = <String, String>{
+    'aac': 'AAC',
+    'ac3': 'AC3',
+    'eac3': 'EAC3',
+    'dts': 'DTS',
+    'dts-hd': 'DTS-HD',
+    'truehd': 'TrueHD',
+    'flac': 'FLAC',
+  };
+
+  String get _locallyDecodedCodecs {
+    final excluded = _prefs.codecsExcludedFromLocalDecode();
+    final labels = _locallyDecodableCodecs.entries
+        .where(
+          (e) => !excluded.contains(e.key == 'dts-hd' ? 'dts' : e.key),
+        )
+        .map((e) => e.value);
+    return labels.isEmpty ? '-' : labels.join(', ');
+  }
 
   List<Widget> _buildCodecRows(AppLocalizations l10n) {
     final transcodeCodecs = DeviceProfileBuilder.transcodeTargetAudioCodecs(
@@ -86,7 +105,7 @@ class _AudioPreferencesScreenState extends State<_AudioPreferencesScreen> {
       _TvSettingsListTile(
         leading: const Icon(Icons.memory),
         title: Text(l10n.locallyDecodedCodecs),
-        subtitle: const Text(_locallyDecodedCodecs),
+        subtitle: Text(_locallyDecodedCodecs),
       ),
       _TvSettingsListTile(
         leading: const Icon(Icons.swap_horiz),
@@ -395,6 +414,41 @@ class _AudioPreferencesScreenState extends State<_AudioPreferencesScreen> {
                 ],
               ),
             ],
+            _SectionHeader(l10n.settingsAudioLocalDecoding),
+            adaptiveListSection(
+              children: [
+                SwitchPreferenceTile(
+                  preference: UserPreferences.localDecodeAc3,
+                  title: l10n.settingsAudioLocalDecodeAc3,
+                  subtitle: l10n.settingsAudioLocalDecodeDescription,
+                  icon: Icons.speaker,
+                ),
+                SwitchPreferenceTile(
+                  preference: UserPreferences.localDecodeEac3,
+                  title: l10n.settingsAudioLocalDecodeEac3,
+                  subtitle: l10n.settingsAudioLocalDecodeDescription,
+                  icon: Icons.surround_sound,
+                ),
+                SwitchPreferenceTile(
+                  preference: UserPreferences.localDecodeDts,
+                  title: l10n.settingsAudioLocalDecodeDts,
+                  subtitle: l10n.settingsAudioLocalDecodeDescription,
+                  icon: Icons.audiotrack,
+                ),
+                SwitchPreferenceTile(
+                  preference: UserPreferences.localDecodeTrueHd,
+                  title: l10n.settingsAudioLocalDecodeTrueHd,
+                  subtitle: l10n.settingsAudioLocalDecodeDescription,
+                  icon: Icons.graphic_eq,
+                ),
+                SwitchPreferenceTile(
+                  preference: UserPreferences.localDecodeFlac,
+                  title: l10n.settingsAudioLocalDecodeFlac,
+                  subtitle: l10n.settingsAudioLocalDecodeDescription,
+                  icon: Icons.music_note,
+                ),
+              ],
+            ),
             const _SectionHeader('Advanced'),
             adaptiveListSection(
               children: [

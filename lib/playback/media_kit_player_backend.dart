@@ -606,6 +606,7 @@ class MediaKitPlayerBackend extends PlayerBackend {
       // mpv decodes all advertised audio codecs in software and downmixes
       // locally, so stereo routes never need a server-side audio transcode.
       universalAudioDecode: true,
+      localDecodeDisabledCodecs: _prefs.codecsExcludedFromLocalDecode(),
       // The Android libmpv is built without the TrueHD and MLP decoders. The
       // Windows and Linux builds have them.
       playerDecodesTrueHd: !PlatformDetection.isAndroid,

@@ -1284,6 +1284,44 @@ void main() {
     );
   });
 
+  group('DeviceProfileBuilder local decode overrides', () {
+    test('a codec taken off local decoding leaves the direct play offer', () {
+      final profile = DeviceProfileBuilder.build(
+        universalAudioDecode: true,
+        localDecodeDisabledCodecs: const <String>{'eac3'},
+      );
+
+      final codecs = _videoDirectPlayAudioCodecs(profile);
+      expect(codecs, isNot(contains('eac3')));
+      expect(codecs, containsAll(<String>['ac3', 'dts', 'aac']));
+    });
+
+    test('bitstreaming keeps the codec in the offer despite the override', () {
+      final profile = DeviceProfileBuilder.build(
+        universalAudioDecode: true,
+        eac3PassthroughEnabled: true,
+        localDecodeDisabledCodecs: const <String>{'eac3'},
+      );
+
+      expect(_videoDirectPlayAudioCodecs(profile), contains('eac3'));
+    });
+
+    test('the override also applies without universal decode', () {
+      final profile = DeviceProfileBuilder.build(
+        audioCapabilityProfile: _capabilityProfile(canDecodeEac3: true),
+        localDecodeDisabledCodecs: const <String>{'eac3'},
+      );
+
+      expect(_videoDirectPlayAudioCodecs(profile), isNot(contains('eac3')));
+    });
+
+    test('an empty override changes nothing', () {
+      final profile = DeviceProfileBuilder.build(universalAudioDecode: true);
+
+      expect(_videoDirectPlayAudioCodecs(profile), contains('eac3'));
+    });
+  });
+
   group('DeviceProfileBuilder universalAudioDecode', () {
     test('a player without a TrueHD decoder stops advertising it', () {
       final profile = DeviceProfileBuilder.build(

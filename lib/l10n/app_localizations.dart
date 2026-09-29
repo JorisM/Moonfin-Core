@@ -18952,6 +18952,48 @@ abstract class AppLocalizations {
   /// **'Locally Decoded Codecs'**
   String get locallyDecodedCodecs;
 
+  /// No description provided for @settingsAudioLocalDecoding.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Decoding'**
+  String get settingsAudioLocalDecoding;
+
+  /// No description provided for @settingsAudioLocalDecodeAc3.
+  ///
+  /// In en, this message translates to:
+  /// **'Decode AC3 locally'**
+  String get settingsAudioLocalDecodeAc3;
+
+  /// No description provided for @settingsAudioLocalDecodeEac3.
+  ///
+  /// In en, this message translates to:
+  /// **'Decode EAC3 locally'**
+  String get settingsAudioLocalDecodeEac3;
+
+  /// No description provided for @settingsAudioLocalDecodeDts.
+  ///
+  /// In en, this message translates to:
+  /// **'Decode DTS locally'**
+  String get settingsAudioLocalDecodeDts;
+
+  /// No description provided for @settingsAudioLocalDecodeTrueHd.
+  ///
+  /// In en, this message translates to:
+  /// **'Decode TrueHD locally'**
+  String get settingsAudioLocalDecodeTrueHd;
+
+  /// No description provided for @settingsAudioLocalDecodeFlac.
+  ///
+  /// In en, this message translates to:
+  /// **'Decode FLAC locally'**
+  String get settingsAudioLocalDecodeFlac;
+
+  /// No description provided for @settingsAudioLocalDecodeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Off asks the server to transcode this codec instead. Turn off if playback is silent on this codec.'**
+  String get settingsAudioLocalDecodeDescription;
+
   /// No description provided for @transcodeTargetCodecs.
   ///
   /// In en, this message translates to:

@@ -1247,6 +1247,7 @@ class Media3PlayerBackend extends PlayerBackend {
       // Media3 bundles the FFmpeg audio decoder extension, so every advertised
       // codec has a software decoder behind it.
       universalAudioDecode: true,
+      localDecodeDisabledCodecs: _prefs.codecsExcludedFromLocalDecode(),
       maxResolution: maxResolution,
       pgsDirectPlay:
           _prefs.get(UserPreferences.pgsDirectPlay) && canRenderBitmapSubtitles,

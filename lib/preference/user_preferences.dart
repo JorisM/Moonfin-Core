@@ -864,6 +864,27 @@ class UserPreferences extends ChangeNotifier {
     };
   }
 
+  /// Codecs the user has taken off local decoding, in the wire names the
+  /// device profile uses. A codec listed here is dropped from the direct-play
+  /// offer unless it is being bitstreamed, so the server transcodes it.
+  Set<String> codecsExcludedFromLocalDecode() => <String>{
+    if (!get(localDecodeAc3)) 'ac3',
+    if (!get(localDecodeEac3)) 'eac3',
+    if (!get(localDecodeDts)) ...['dts', 'dca'],
+    if (!get(localDecodeTrueHd)) ...['truehd', 'mlp'],
+    if (!get(localDecodeFlac)) 'flac',
+  };
+
+  /// The five per-codec local-decode toggle preferences.
+  static List<Preference<bool>> get localDecodeTogglePreferences =>
+      <Preference<bool>>[
+        localDecodeAc3,
+        localDecodeEac3,
+        localDecodeDts,
+        localDecodeTrueHd,
+        localDecodeFlac,
+      ];
+
   /// The five per-codec passthrough toggle preferences.
   static List<Preference<bool>> get passthroughTogglePreferences =>
       <Preference<bool>>[
@@ -2108,6 +2129,37 @@ class UserPreferences extends ChangeNotifier {
   static final trueHdPassthroughEnabled = Preference(
     key: 'pref_passthrough_truehd',
     defaultValue: false,
+  );
+
+
+  /// Per-codec local-decode switches. Default on, which is the historical
+  /// behaviour: a player that decodes in software advertises every codec and
+  /// never asks the server to re-encode. Turning one off removes that codec
+  /// from the direct-play offer so the server transcodes it, which is the only
+  /// escape hatch when the on-device decoder produces silence.
+  static final localDecodeAc3 = Preference(
+    key: 'pref_local_decode_ac3',
+    defaultValue: true,
+  );
+
+  static final localDecodeEac3 = Preference(
+    key: 'pref_local_decode_eac3',
+    defaultValue: true,
+  );
+
+  static final localDecodeDts = Preference(
+    key: 'pref_local_decode_dts',
+    defaultValue: true,
+  );
+
+  static final localDecodeTrueHd = Preference(
+    key: 'pref_local_decode_truehd',
+    defaultValue: true,
+  );
+
+  static final localDecodeFlac = Preference(
+    key: 'pref_local_decode_flac',
+    defaultValue: true,
   );
 
   static final audioNightMode = Preference(
